@@ -25,6 +25,7 @@ const MapGame: React.FC<MapIProps> = (props: MapIProps) => {
   const [matrix, setMatrix] = useState<Array<Array<Number>>>(
     initMatrix(lenght)
   );
+  const [last, setLast] = useState<[number, number]>([-1, -1]);
   const [turn, setTurn] = useState<Player>(1);
 
   const danh = (x: number, y: number) => {
@@ -35,16 +36,14 @@ const MapGame: React.FC<MapIProps> = (props: MapIProps) => {
       });
       setTurn(turn === 1 ? 2 : 1);
     }
-    if (checkWin(matrix)) {
-      window.alert("Player " + turn + " win");
-    }
+    setLast([y, x]);
   };
 
   useEffect(() => {
-    if (checkWin(matrix)) {
-      window.alert("Player " + turn + " win");
+    if (checkWin(matrix, last[0], last[1])) {
+      window.alert("Player " + turn + " Win");
     }
-  }, [matrix]);
+  }, [last, matrix]);
 
   const resetBoard = () => {
     setMatrix(initMatrix(lenght));
