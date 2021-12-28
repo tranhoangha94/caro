@@ -92,8 +92,8 @@ export const checkWin = (
   x: number
 ) => {
   return (
-    x > 0 &&
-    y > 0 &&
+    x >= 0 &&
+    y >= 0 &&
     (checkThang(matrix, y, x) ||
       checkNgang(matrix, y, x) ||
       checkCheoChinh(matrix, y, x) ||

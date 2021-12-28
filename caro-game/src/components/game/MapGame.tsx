@@ -34,19 +34,28 @@ const MapGame: React.FC<MapIProps> = (props: MapIProps) => {
         prevMat[y][x] = turn;
         return prevMat;
       });
-      setTurn(turn === 1 ? 2 : 1);
     }
     setLast([y, x]);
   };
 
   useEffect(() => {
-    if (checkWin(matrix, last[0], last[1])) {
-      window.alert("Player " + turn + " Win");
+    if (last[0] !== -1 && last[1] !== -1) {
+      if (checkWin(matrix, last[0], last[1])) {
+        window.alert("Player " + turn + " Win");
+        if (turn === 1) {
+          setScore1((scr1) => scr1 + 1);
+        } else {
+          setScore2((scr2) => scr2 + 1);
+        }
+      } else {
+        setTurn(turn === 1 ? 2 : 1);
+      }
     }
-  }, [last, matrix]);
+  }, [last]);
 
   const resetBoard = () => {
     setMatrix(initMatrix(lenght));
+    setLast([-1, -1]);
     setTurn(1);
   };
 
@@ -55,7 +64,7 @@ const MapGame: React.FC<MapIProps> = (props: MapIProps) => {
       <h1>{`${score1} - ${score2}`}</h1>
       <Reset onClick={resetBoard}>Reset</Reset>
       {matrix.map((row, y) => (
-        <Row>
+        <Row key={`row-${y}`}>
           {row.map((cell, x) => (
             <Cell key={`${x}-${y}`} onClick={() => danh(x, y)}>
               {matrix[y][x] === 1 ? (
